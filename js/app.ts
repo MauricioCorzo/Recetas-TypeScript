@@ -1,11 +1,14 @@
-// import axios from "axios";
-import { CategoryData } from "./interfaces";
-import { ComidasDeCategoria , Comidas} from "./interfaces";
+import { CategoryData, ComidaIndividual, ComidasDeCategoria , Comidas, Meal } from "./interfaces";
+import bootstrap from "bootstrap";
 
+
+// SELECTORES
 const selectCategorias = document.querySelector("#categorias") as HTMLSelectElement;
 const resultado = document.querySelector("#resultado") as HTMLDivElement;
+const modal = new bootstrap.Modal("#modal", {});
 
 
+//FUNCIONES
 const obtenerCategorias = async () => {
     const url: string = "https://www.themealdb.com/api/json/v1/1/categories.php";
     
@@ -34,6 +37,36 @@ const seleccionarCategoria = async (e:Event ) => {
     mostrarComidas(meals);
 };
 
+//Boton de receta y activacion del modal
+const seleccionarReceta = async (id: string) => {
+    const url = `https://themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+    const data = await fetch(url);
+    
+    const { meals } : ComidaIndividual = await data.json();
+
+    const [ meal ] = meals;
+    mostrarRecetaModal(meal);
+};
+
+const mostrarRecetaModal = (meal: Meal) => {
+    const {  strInstructions, strMeal, strMealThumb } = meal;
+
+    //Añadir Contenido al Modal
+    const modalTitle = document.querySelector(".modal .modal-title");
+    const modalBody = document.querySelector(".modal .modal-body");
+
+
+    modalTitle.textContent = strMeal;
+    modalBody.innerHTML = `
+        <img class="img-fluid" src=${strMealThumb} alt=receta ${strMeal}>
+        <h3 class="my-3 text-center">Instrucciones</h3>
+        <p>${strInstructions}</p>
+    `;
+
+    //Muestra el Modal
+    modal.show();
+};
+
 //Limpia el HTML
 const limpiarHTML = (selector: HTMLElement) => {
     while(selector.firstChild){
@@ -53,7 +86,7 @@ const mostrarComidas = (meals: Comidas[]) => {
     
     meals.forEach(m => {
 
-        const { strMeal, strMealThumb } = m;
+        const {idMeal ,strMeal, strMealThumb } = m;
 
         const recetaContenedor = document.createElement("div") as HTMLDivElement;
         recetaContenedor.classList.add("col-md-4");
@@ -76,6 +109,11 @@ const mostrarComidas = (meals: Comidas[]) => {
         const recetaButton = document.createElement("button");
         recetaButton.classList.add("btn", "btn-danger", "w-100");
         recetaButton.textContent = "Ver Receta";
+        recetaButton.onclick = function(){
+            seleccionarReceta(idMeal);
+        };
+        // recetaButton.dataset.bsTarget = "#modal";
+        // recetaButton.dataset.bsToggle = "modal";
 
         //Inyectar en HTML
         cardBody.appendChild(recetaHeading);
@@ -90,12 +128,13 @@ const mostrarComidas = (meals: Comidas[]) => {
     });
 };
 
-
+//INICIO DE APP
 function iniciarApp(){
     
     obtenerCategorias();
     
     selectCategorias.addEventListener("change", seleccionarCategoria);
+    
 }
 
 
