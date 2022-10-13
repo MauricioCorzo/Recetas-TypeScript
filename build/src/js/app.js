@@ -1,4 +1,5 @@
 import { Modal, Toast } from "bootstrap";
+import axios from "axios";
 // SELECTORES
 const selectCategorias = document.querySelector("#categorias");
 const resultado = document.querySelector("#resultado");
@@ -7,9 +8,9 @@ const modal = new Modal("#modal", {});
 //FUNCIONES
 const obtenerCategorias = async () => {
     const url = "https://www.themealdb.com/api/json/v1/1/categories.php";
-    const data = await fetch(url);
-    const respuesta = await data.json();
-    mostrarCategorias(respuesta);
+    const { data } = await axios(url);
+    // const respuesta: CategoryData = await data.json();
+    mostrarCategorias(data);
 };
 const mostrarCategorias = ({ categories }) => {
     categories.forEach((categoria) => {
@@ -22,9 +23,9 @@ const mostrarCategorias = ({ categories }) => {
 };
 const seleccionarCategoria = async (e) => {
     const categoriaValue = e.target.value;
-    const data = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoriaValue}`);
-    const { meals } = await data.json();
-    mostrarComidas(meals);
+    const { data } = await axios(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoriaValue}`);
+    // const { meals }: ComidasDeCategoria = await data.json();
+    mostrarComidas(data.meals);
 };
 //Limpia el HTML
 const limpiarHTML = (selector) => {
@@ -119,9 +120,9 @@ const obtenerFavoritos = () => {
 //Boton de receta y activacion del modal
 const seleccionarReceta = async (id) => {
     const url = `https://themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
-    const data = await fetch(url);
-    const { meals } = await data.json();
-    const [meal] = meals;
+    const { data } = await axios(url);
+    // const { meals } : ComidaIndividual = await data.json();
+    const [meal] = data.meals;
     mostrarRecetaModal(meal);
 };
 const mostrarRecetaModal = (meal) => {

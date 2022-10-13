@@ -1,5 +1,6 @@
 import { CategoryData, ComidaIndividual, ComidasDeCategoria , Comidas, Meal, ObjetoLocalStorage } from "./interfaces";
 import { Modal , Toast} from "bootstrap";
+import axios, { AxiosResponse } from "axios";
 
 
 
@@ -15,10 +16,10 @@ const modal = new Modal("#modal", {});
 const obtenerCategorias = async () => {
     const url: string = "https://www.themealdb.com/api/json/v1/1/categories.php";
     
-    const  data  = await fetch(url);
-    const respuesta: CategoryData = await data.json();
+    const  {data}:AxiosResponse<CategoryData>  = await axios(url);
+    // const respuesta: CategoryData = await data.json();
 
-    mostrarCategorias(respuesta);
+    mostrarCategorias(data);
 
 };
 
@@ -35,9 +36,9 @@ const mostrarCategorias = ({categories}: CategoryData): void => {
 const seleccionarCategoria = async (e: Event ) => {
     const categoriaValue = (e.target as HTMLSelectElement).value;
     
-    const data = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoriaValue}`);
-    const { meals }: ComidasDeCategoria = await data.json();
-    mostrarComidas(meals);
+    const {data}: AxiosResponse< ComidasDeCategoria> = await axios(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoriaValue}`);
+    // const { meals }: ComidasDeCategoria = await data.json();
+    mostrarComidas(data.meals);
 };
 
 
@@ -165,11 +166,11 @@ const obtenerFavoritos = () => {
 //Boton de receta y activacion del modal
 const seleccionarReceta = async (id: string) => {
     const url = `https://themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
-    const data = await fetch(url);
+    const {data}: AxiosResponse<ComidaIndividual> = await axios(url);
     
-    const { meals } : ComidaIndividual = await data.json();
+    // const { meals } : ComidaIndividual = await data.json();
 
-    const [ meal ] = meals;
+    const [ meal ] = data.meals;
     mostrarRecetaModal(meal);
 };
 
