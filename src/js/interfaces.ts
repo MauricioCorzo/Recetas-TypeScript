@@ -78,3 +78,9 @@ export interface Meal {
   strCreativeCommonsConfirmed: any
   dateModified: any
 }
+
+export interface ObjetoLocalStorage {
+  idMeal: string
+  strMeal: string
+  strMealThumb: string
+}
