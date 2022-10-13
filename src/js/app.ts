@@ -1,11 +1,11 @@
 import { CategoryData, ComidaIndividual, ComidasDeCategoria , Comidas, Meal } from "./interfaces";
-import bootstrap from "bootstrap";
+import { Modal } from "bootstrap";
 
 
 // SELECTORES
 const selectCategorias = document.querySelector("#categorias") as HTMLSelectElement;
 const resultado = document.querySelector("#resultado") as HTMLDivElement;
-const modal = new bootstrap.Modal("#modal", {});
+const modal = new Modal("#modal", {});
 
 
 //FUNCIONES

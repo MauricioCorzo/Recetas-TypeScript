@@ -1,8 +1,8 @@
-// import bootstrap from "bootstrap";
+import { Modal } from "bootstrap";
 // SELECTORES
 const selectCategorias = document.querySelector("#categorias");
 const resultado = document.querySelector("#resultado");
-const modal = new bootstrap.Modal("#modal", {});
+const modal = new Modal("#modal", {});
 //FUNCIONES
 const obtenerCategorias = async () => {
     const url = "https://www.themealdb.com/api/json/v1/1/categories.php";
