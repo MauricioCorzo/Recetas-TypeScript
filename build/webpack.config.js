@@ -2,7 +2,7 @@ import path from "path";
 export default {
     mode: "development",
     entry: {
-        app: "./build/app.js",
+        app: "./build/src/js/app.js",
     },
     output: {
         filename: "[name].js",
