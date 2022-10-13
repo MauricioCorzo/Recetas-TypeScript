@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "tsc": "tsc",
+    "build": "webpack",
     "dev": "tsc && webpack"
   },
   "keywords": [],
