@@ -4,12 +4,12 @@ import axios, { AxiosResponse } from "axios";
 
 
 
-// SELECTORES
+// SELECTORES DEL HTML
 const selectCategorias = document.querySelector("#categorias") as HTMLSelectElement;
 const resultado = document.querySelector("#resultado") as HTMLDivElement;
 const favoritosDiv = document.querySelector(".favoritos");
 
-const modal = new Modal("#modal", {});
+const modal = new Modal("#modal", {}); // MODAL DE BOOTSTRAP
 
 
 //FUNCIONES
